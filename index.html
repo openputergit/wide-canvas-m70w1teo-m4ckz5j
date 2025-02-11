@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AgroConnect - Direct Farmer to Consumer Platform</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+    .custom-scroll::-webkit-scrollbar {
+        width: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 3px;
+    }
+</style>
+<body class="bg-gray-50">
+    <!-- Login/Register Section -->
+    <div id="authSection" class="min-h-screen flex items-center justify-center">
+        <div class="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-green-600">AgroConnect</h2>
+                <p class="text-gray-600">Connect directly with farmers and buyers</p>
+            </div>
+            
+            <div class="space-y-4">
+                <div class="flex justify-center space-x-4 mb-6">
+                    <button onclick="toggleUserType('farmer')" class="px-4 py-2 rounded-full" id="farmerBtn">Farmer</button>
+                    <button onclick="toggleUserType('customer')" class="px-4 py-2 rounded-full" id="customerBtn">Customer</button>
+                </div>
+                
+                <input type="email" id="email" placeholder="Email" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500">
+                <input type="password" id="password" placeholder="Password" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500">
+                
+                <button onclick="handleAuth()" class="w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition-colors">
+                    Login
+                </button>
+                
+                <p class="text-center text-gray-600">
+                    Don't have an account? 
+                    <a href="#" onclick="toggleAuthMode()" class="text-green-600 hover:underline" id="authToggleBtn">Register</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Application (Initially Hidden) -->
+    <div id="mainApp" class="hidden">
+        <!-- Navigation -->
+        <nav class="bg-green-600 text-white p-4">
+            <div class="container mx-auto flex justify-between items-center">
+                <h1 class="text-2xl font-bold">AgroConnect</h1>
+                <div class="space-x-4">
+                    <button onclick="showSection('marketplace')" class="hover:text-green-200">Marketplace</button>
+                    <button onclick="showSection('community')" class="hover:text-green-200">Community</button>
+                    <button onclick="showSection('resources')" class="hover:text-green-200">Resources</button>
+                    <button onclick="logout()" class="hover:text-green-200">Logout</button>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Marketplace Section -->
+        <div id="marketplace" class="container mx-auto p-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Product Cards will be inserted here -->
+            </div>
+        </div>
+
+        <!-- Community Section -->
+        <div id="community" class="container mx-auto p-4 hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="lg:col-span-2">
+                    <div id="messages" class="bg-white rounded-lg shadow p-4 h-[500px] overflow-y-auto custom-scroll">
+                        <!-- Messages will appear here -->
+                    </div>
+                    <div class="mt-4 flex gap-2">
+                        <input type="text" id="messageInput" placeholder="Type your message..." class="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:border-green-500">
+                        <button onclick="sendMessage()" class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700">Send</button>
+                    </div>
+                </div>
+                <div class="bg-white rounded-lg shadow p-4">
+                    <h3 class="text-xl font-bold mb-4">Online Members</h3>
+                    <div id="membersList" class="space-y-2">
+                        <!-- Members will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div id="resources" class="container mx-auto p-4 hidden">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-xl font-bold mb-4">Modern Agriculture</h3>
+                    <ul class="space-y-2">
+                        <li><i class="bi bi-check2-circle text-green-600"></i> Precision Farming</li>
+                        <li><i class="bi bi-check2-circle text-green-600"></i> Smart Irrigation</li>
+                        <li><i class="bi bi-check2-circle text-green-600"></i> Drone Technology</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-xl font-bold mb-4">Crop Management</h3>
+                    <ul class="space-y-2">
+                        <li><i class="bi bi-check2-circle text-green-600"></i> Soil Health</li>
+                        <li><i class="bi bi-check2-circle text-green-600"></i> Pest Control</li>
+                        <li><i class="bi bi-check2-circle text-green-600"></i> Crop Rotation</li>
+                    </ul>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h3 class="text-xl font-bold mb-4">Organic Farming</h3>
+                    <ul class="space-y-2">
+                        <li><i class="bi bi-check2-circle text-green-600"></i> Natural Pesticides</li>
+                        <li><i class="bi bi-check2-circle text-green-600"></i> Composting</li>
+                        <li><i class="bi bi-check2-circle text-green-600"></i> Sustainable Practices</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+let currentUserType = 'farmer';
+let isLoginMode = true;
+let currentUser = null;
+
+// Initialize demo data
+const products = [
+    { id: 1, name: 'Organic Wheat', price: 25, farmer: 'John Doe', description: 'Fresh organic wheat from sustainable farms' },
+    { id: 2, name: 'Rice', price: 30, farmer: 'Jane Smith', description: 'Premium quality rice' },
+    { id: 3, name: 'Corn', price: 20, farmer: 'Bob Wilson', description: 'Sweet corn fresh from the farm' }
+];
+
+const messages = [];
+const members = ['John (Farmer)', 'Sarah (Customer)', 'Mike (Farmer)', 'Lisa (Customer)'];
+
+// UI Functions
+function toggleUserType(type) {
+    currentUserType = type;
+    document.getElementById('farmerBtn').className = `px-4 py-2 rounded-full ${type === 'farmer' ? 'bg-green-600 text-white' : 'bg-gray-200'}`;
+    document.getElementById('customerBtn').className = `px-4 py-2 rounded-full ${type === 'customer' ? 'bg-green-600 text-white' : 'bg-gray-200'}`;
+}
+
+function toggleAuthMode() {
+    isLoginMode = !isLoginMode;
+    document.getElementById('authToggleBtn').textContent = isLoginMode ? 'Register' : 'Login';
+    const submitBtn = document.querySelector('#authSection button');
+    submitBtn.textContent = isLoginMode ? 'Login' : 'Register';
+}
+
+function handleAuth() {
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+    
+    if (!email || !password) {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    // Simple demo authentication
+    currentUser = { email, type: currentUserType };
+    document.getElementById('authSection').classList.add('hidden');
+    document.getElementById('mainApp').classList.remove('hidden');
+    showSection('marketplace');
+    loadMarketplace();
+}
+
+function logout() {
+    currentUser = null;
+    document.getElementById('authSection').classList.remove('hidden');
+    document.getElementById('mainApp').classList.add('hidden');
+}
+
+function showSection(section) {
+    ['marketplace', 'community', 'resources'].forEach(s => {
+        document.getElementById(s).classList.add('hidden');
+    });
+    document.getElementById(section).classList.remove('hidden');
+
+    if (section === 'community') {
+        loadCommunity();
+    }
+}
+
+function loadMarketplace() {
+    const marketplace = document.getElementById('marketplace');
+    const productsHTML = products.map(product => `
+        <div class="bg-white rounded-lg shadow p-6">
+            <h3 class="text-xl font-bold mb-2">${product.name}</h3>
+            <p class="text-gray-600 mb-4">${product.description}</p>
+            <p class="text-green-600 font-bold">$${product.price}/kg</p>
+            <p class="text-gray-500 mb-4">Seller: ${product.farmer}</p>
+            ${currentUser?.type === 'customer' ? 
+                `<button onclick="purchaseProduct(${product.id})" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Purchase</button>` :
+                ''
+            }
+        </div>
+    `).join('');
+    marketplace.querySelector('.grid').innerHTML = productsHTML;
+}
+
+function loadCommunity() {
+    // Load messages
+    const messagesDiv = document.getElementById('messages');
+    messagesDiv.innerHTML = messages.map(msg => `
+        <div class="mb-4">
+            <p class="font-bold">${msg.user}</p>
+            <p class="text-gray-600">${msg.text}</p>
+        </div>
+    `).join('');
+
+    // Load members
+    const membersDiv = document.getElementById('membersList');
+    membersDiv.innerHTML = members.map(member => `
+        <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-green-500 rounded-full"></span>
+            <span>${member}</span>
+        </div>
+    `).join('');
+}
+
+function sendMessage() {
+    const input = document.getElementById('messageInput');
+    const message = input.value.trim();
+    
+    if (message) {
+        messages.push({
+            user: `${currentUser.email} (${currentUser.type})`,
+            text: message
+        });
+        input.value = '';
+        loadCommunity();
+    }
+}
+
+function purchaseProduct(productId) {
+    const product = products.find(p => p.id === productId);
+    if (product) {
+        alert(`Purchase request sent for ${product.name}`);
+    }
+}
+
+// Initialize the application
+document.addEventListener('DOMContentLoaded', () => {
+    toggleUserType('farmer');
+});
+</script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
